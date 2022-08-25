@@ -26,7 +26,7 @@ class ToastmastersSpider(scrapy.Spider):
                 if li.attrib["class"] == "name":
                     if len(li) == 1:
                         name = li[0].tail.strip().replace(" ", " ")
-                        if name.encode().isalpha():
+                        if name.isascii():
                             ename = name
                         else:
                             cname = name
