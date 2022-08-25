@@ -18,22 +18,26 @@ class ToastmastersSpider(scrapy.Spider):
         return list(map(lambda x: " ".join(x.split()), response.xpath(xpath).getall()))
 
     def extract(self, inner):
-        name1 = name2 = title = telephone = ""
+        cname = ename = title = telephone = ""
         for i, li in enumerate(
             etree.fromstring(inner, parser=etree.XMLParser(recover=True))
         ):
             if "class" in li.attrib:
                 if li.attrib["class"] == "name":
                     if len(li) == 1:
-                        name1 = li[0].tail.strip().replace(" ", " ")
+                        name = li[0].tail.strip().replace(" ", " ")
+                        if name.encode().isalpha():
+                            ename = name
+                        else:
+                            cname = name
                     else:
-                        name1 = li[0].tail.strip().replace(" ", " ")
-                        name2 = li[1].text.strip().replace(" ", " ")
+                        cname = li[0].tail.strip().replace(" ", " ")
+                        ename = li[1].text.strip().replace(" ", " ")
                 elif li.attrib["class"] == "telephone":
                     telephone = li.text
             elif i == 1:
                 title = li.text.strip()
-        return name1, name2, title, telephone
+        return cname, ename, title, telephone
 
     def parse(self, response):
         page = parse_qs(urlparse(response.url).query)["division"][0]
@@ -45,14 +49,14 @@ class ToastmastersSpider(scrapy.Spider):
         for img, position_c, position_e, inner in zip(
             imgs, position_cs, position_es, inners
         ):
-            name1, name2, title, telephone = self.extract(inner)
+            cname, ename, title, telephone = self.extract(inner)
             yield {
                 "page": page,
                 "img": img,
                 "position_c": position_c,
                 "position_e": position_e,
-                "name1": name1,
-                "name2": name2,
+                "cname": cname,
+                "ename": ename,
                 "title": title,
                 "telephone": telephone,
             }
