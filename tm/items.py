@@ -17,3 +17,4 @@ class TmItem(scrapy.Item):
     ename = scrapy.Field()
     title = scrapy.Field()
     telephone = scrapy.Field()
+    email = scrapy.Field()

@@ -18,7 +18,7 @@ class ToastmastersSpider(scrapy.Spider):
         return list(map(lambda x: " ".join(x.split()), response.xpath(xpath).getall()))
 
     def extract(self, inner):
-        cname = ename = title = telephone = ""
+        cname = ename = title = telephone = email = ""
         for i, li in enumerate(
             etree.fromstring(inner, parser=etree.XMLParser(recover=True))
         ):
@@ -37,7 +37,16 @@ class ToastmastersSpider(scrapy.Spider):
                     telephone = li.text
             elif i == 1:
                 title = li.text.strip()
-        return cname, ename, title, telephone
+            else:
+                for i, letter in enumerate(li[0].text.split('"')[1]):
+                    if letter.isalpha():
+                        stayInAlphabet = ord(letter) + 13
+                        if stayInAlphabet > ord("z"):
+                            stayInAlphabet -= 26
+                        email += chr(stayInAlphabet)
+                    else:
+                        email += letter
+        return cname, ename, title, telephone, email
 
     def parse(self, response):
         page = parse_qs(urlparse(response.url).query)["division"][0]
@@ -49,7 +58,7 @@ class ToastmastersSpider(scrapy.Spider):
         for img, position_c, position_e, inner in zip(
             imgs, position_cs, position_es, inners
         ):
-            cname, ename, title, telephone = self.extract(inner)
+            cname, ename, title, telephone, email = self.extract(inner)
             yield {
                 "page": page,
                 "img": img,
@@ -59,4 +68,5 @@ class ToastmastersSpider(scrapy.Spider):
                 "ename": ename,
                 "title": title,
                 "telephone": telephone,
+                "email": email,
             }
