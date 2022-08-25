@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Module",
+            "name": "Run crawler",
             "type": "python",
             "request": "launch",
             "module": "scrapy",
@@ -14,6 +14,14 @@
                 "crawl",
                 "toastmasters",
             ],
-        }
+        },
+        {
+            "name": "Download images",
+            "type": "python",
+            "request": "launch",
+            "program": "download_image.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+        },
     ]
 }
