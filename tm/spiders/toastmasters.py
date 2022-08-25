@@ -38,7 +38,7 @@ class ToastmastersSpider(scrapy.Spider):
             elif i == 1:
                 title = li.text.strip()
             else:
-                for i, letter in enumerate(li[0].text.split('"')[1]):
+                for letter in li[0].text.split('"')[1]:
                     if letter.isalpha():
                         stayInAlphabet = ord(letter) + 13
                         if stayInAlphabet > ord("z"):
