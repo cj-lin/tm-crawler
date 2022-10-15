@@ -1,2 +1,6 @@
 scrapy
 pandas
+flake8
+autoflake
+black
+isort[requirements_deprecated_finder]

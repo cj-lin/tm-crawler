@@ -5,14 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run crawler",
+            "name": "Run D67Officer crawler",
             "type": "python",
             "request": "launch",
             "module": "scrapy",
             "justMyCode": true,
             "args": [
                 "crawl",
-                "toastmasters",
+                "d67officer",
             ],
         },
         {

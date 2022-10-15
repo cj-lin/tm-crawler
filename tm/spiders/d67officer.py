@@ -1,11 +1,11 @@
-from lxml import etree
 from urllib.parse import parse_qs, urlparse
 
 import scrapy
+from lxml import etree
 
 
-class ToastmastersSpider(scrapy.Spider):
-    name = "toastmasters"
+class D67OfficerSpider(scrapy.Spider):
+    name = "d67officer"
     allowed_domains = ["www.toastmasters.org.tw"]
     start_urls = list(
         map(
