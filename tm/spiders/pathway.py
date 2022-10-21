@@ -1,7 +1,4 @@
-from urllib.parse import parse_qs, urlparse
-
 import scrapy
-from lxml import etree
 
 
 class PathwaySpider(scrapy.Spider):
@@ -75,20 +72,21 @@ class PathwaySpider(scrapy.Spider):
     )
 
     def get_xpath(self, response, xpath):
-        return list(map(lambda x: " ".join(x.split()), response.xpath(xpath).getall()))
+        get = response.xpath(xpath).get()
+        return get.strip() if get else None
 
     def parse(self, response):
         return {
-            "title": response.xpath("/html/body/div[1]/h2/text()").get(),
-            "description": response.xpath("/html/body/div[1]/p[1]/text()").get(),
-            "purpose": response.xpath("/html/body/div[1]/p[2]/text()[2]").get(),
-            "overview": response.xpath("/html/body/div[1]/p[3]/text()[2]").get(),
-            "includes1": response.xpath("/html/body/div[1]/p[4]/text()[2]").get(),
-            "includes2": response.xpath("/html/body/div[1]/p[5]/text()").get(),
-            "includes3": response.xpath("/html/body/div[1]/p[6]/text()").get(),
-            "includes4": response.xpath("/html/body/div[1]/p[7]/text()").get(),
-            "includes5": response.xpath("/html/body/div[1]/p[8]/text()").get(),
-            "form1": response.xpath("/html/body/div[2]/a[2]/@href").get(),
-            "form2": response.xpath("/html/body/div[2]/a[3]/@href").get(),
-            "form3": response.xpath("/html/body/div[2]/a[4]/@href").get(),
+            "title": self.get_xpath(response, "/html/body/div[1]/h2/text()"),
+            "description": self.get_xpath(response, "/html/body/div[1]/p[1]/text()"),
+            "purpose": self.get_xpath(response, "/html/body/div[1]/p[2]/text()[2]"),
+            "overview": self.get_xpath(response, "/html/body/div[1]/p[3]/text()[2]"),
+            "includes1": self.get_xpath(response, "/html/body/div[1]/p[4]/text()[2]"),
+            "includes2": self.get_xpath(response, "/html/body/div[1]/p[4]/text()[3]"),
+            "includes3": self.get_xpath(response, "/html/body/div[1]/p[4]/text()[4]"),
+            "includes4": self.get_xpath(response, "/html/body/div[1]/p[4]/text()[5]"),
+            "includes5": self.get_xpath(response, "/html/body/div[1]/p[4]/text()[6]"),
+            "form1": self.get_xpath(response, "/html/body/div[2]/a[2]/@href"),
+            "form2": self.get_xpath(response, "/html/body/div[2]/a[3]/@href"),
+            "form3": self.get_xpath(response, "/html/body/div[2]/a[4]/@href"),
         }
