@@ -16,6 +16,17 @@
             ],
         },
         {
+            "name": "Run Pathways crawler",
+            "type": "python",
+            "request": "launch",
+            "module": "scrapy",
+            "justMyCode": true,
+            "args": [
+                "crawl",
+                "pathway",
+            ],
+        },
+        {
             "name": "Download images",
             "type": "python",
             "request": "launch",

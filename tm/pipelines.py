@@ -10,7 +10,7 @@ from scrapy.exporters import CsvItemExporter
 
 class TmPipeline:
     def __init__(self):
-        self.file = open("officers.csv", "wb")
+        self.file = open("out.csv", "wb")
         self.exporter = CsvItemExporter(self.file)
         self.exporter.start_exporting()
 
